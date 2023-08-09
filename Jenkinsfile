@@ -5,7 +5,7 @@ pipeline {
         stage('checkout') {
             steps {
                 echo "checkout code"
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/LondheShubham153/django-notes-app.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/konark111/django-notes-app-jenkins.git']])
             }
         
         }
