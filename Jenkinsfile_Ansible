@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                echo "checkout code"
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/konark111/django-notes-app-jenkins.git']])
+            }
+        
+        }
+        stage('build image') {
+            steps {
+                echo "building image"
+                sh 'docker build -t konark111/cicd2 .'
+            }
+        
+        }
+        stage('push image to dockerhub'){
+            steps{
+                echo "push image to dockerhub"
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker push konark111/cicd2"
+            }
+            }
+        }
+        stage('deploy container to remote instance via ansible'){
+            steps{
+                echo "deploy container to remote instances via ansible"
+                ansiblePlaybook credentialsId: 'ansible', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory', playbook: 'play1.yml'
+                 //sh "ansible-playbook -i inventory play1.yml"
+
+
+            }
+        }
+    }
+}
