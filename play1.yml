@@ -3,13 +3,13 @@
   become: yes
   tasks:
   - name: Transfer script
-    copy: src=./test.sh dest=/home/ubuntu mode=777
+    copy: src=/var/lib/jenkins/workspace/cicd-pipeline/test.sh dest=/home/ubuntu mode=777
 
   - name: Execute script
     command: bash /home/ubuntu/test.sh
 
   - name: Transfer script
-    copy: src=./docker-compose.yml dest=/home/ubuntu mode=777
+    copy: src=/var/lib/jenkins/workspace/cicd-pipeline/docker-compose.yml dest=/home/ubuntu mode=777
 
   - name: Execute command
     command: docker-compose down
