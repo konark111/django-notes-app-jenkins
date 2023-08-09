@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Transfer script
+    copy: src=/home/ubuntu/demo/test.sh dest=/home/ubuntu mode=777
+
+  - name: Execute script
+    command: bash /home/ubuntu/test.sh
+
+  - name: Transfer script
+    copy: src=/var/lib/jenkins/workspace/cicd-pipeline/docker-compose.yml dest=/home/ubuntu mode=777
+
+  - name: Execute command
+    command: docker-compose down
+
+  - name: Execute command
+    command:  docker-compose up -d
+
+# test script contains command to install docker+docker-compose
